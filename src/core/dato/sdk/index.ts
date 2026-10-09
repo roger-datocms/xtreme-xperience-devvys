@@ -2,6 +2,7 @@ import type { AnyVariables } from '@urql/core'
 import type { DocumentNode } from 'graphql'
 import { initLogger, type Logger } from '../../logger'
 import { type Client, createDatoClient } from '../client'
+import { getDatoDebugSession } from '../debug'
 import type { Requester } from './blueprint'
 import { getSdk } from './blueprint'
 
@@ -25,10 +26,15 @@ const _makeSdk = (client: Client, _logger: Logger) => {
     // TODO Review if this step is necessary
     const variables = isAnyVariables(_variables) ? _variables : {}
 
-    const { data, error } =
+    // Optional DatoCMS debug panel; null unless DATOCMS_DEBUG_PANEL=true.
+    const debug = getDatoDebugSession()
+    const renderClient = debug?.client ?? client
+    const operation =
       type === 'mutation'
-        ? await client.mutation<R>(doc, variables)
-        : await client.query<R>(doc, variables)
+        ? renderClient.mutation<R>(doc, variables, debug?.context).toPromise()
+        : renderClient.query<R>(doc, variables, debug?.context).toPromise()
+
+    const { data, error } = debug ? await debug.track(operation) : await operation
 
     if (error) {
       throw error

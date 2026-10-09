@@ -5,6 +5,7 @@ import { TemplateHomepage } from '../../components/template-homepage'
 import { initDatoSdk } from '../../core/dato/sdk'
 import { logger } from '../../core/logger/logger'
 import { rethrowPageError } from '../../core/errors/rethrow-page-error'
+import { withDatoDebugPanel } from '../../components/datocms-debug-panel'
 
 // Revalidate homepage data every 60 seconds for faster server responses
 // This enables ISR (Incremental Static Regeneration) to serve cached HTML
@@ -38,4 +39,4 @@ const FrontendHomePage = async () => {
   }
 }
 
-export default FrontendHomePage
+export default withDatoDebugPanel(FrontendHomePage)

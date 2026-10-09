@@ -6,6 +6,7 @@ import { TemplatePage } from '../../../components/template-page'
 import { initDatoSdk } from '../../../core/dato/sdk'
 import { logger } from '../../../core/logger/logger'
 import { rethrowPageError } from '../../../core/errors/rethrow-page-error'
+import { withDatoDebugPanel } from '../../../components/datocms-debug-panel'
 
 // No pages are prebuilt: each one renders on its first request, then the
 // cache serves it and regenerates it at most every 60 s (time-based ISR).
@@ -84,4 +85,4 @@ const CatchAllPage = async ({ params }: Props) => {
   }
 }
 
-export default CatchAllPage
+export default withDatoDebugPanel(CatchAllPage)
