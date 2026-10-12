@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import { cache } from 'react'
+import { withDatoDebugPanel } from '../../../../../../../components/datocms-debug-panel'
 import { TemplateBlogListingPage } from '../../../../../../../components/template-blog-listing-page'
 import {
   POSTS_PER_PAGE,
@@ -33,7 +34,7 @@ const getPostsByCategoryData = cache(async (categoryId: string) => {
   return await sdk.getPostsByCategory({ categoryId })
 })
 
-export default async function BlogCategoryPagePaginated({ params }: Props) {
+const BlogCategoryPagePaginated = async ({ params }: Props) => {
   try {
     const { handle, number } = await params
     const pageNumber = Number.parseInt(number, 10)
@@ -94,3 +95,5 @@ export default async function BlogCategoryPagePaginated({ params }: Props) {
     rethrowPageError(err, 'Blog category request failed')
   }
 }
+
+export default withDatoDebugPanel(BlogCategoryPagePaginated)

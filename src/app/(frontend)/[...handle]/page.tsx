@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { cache } from 'react'
+import { withDatoDebugPanel } from '../../../components/datocms-debug-panel'
 import { generateSeoMetadata } from '../../../components/global-seo'
 import { TemplatePage } from '../../../components/template-page'
 import { initDatoSdk } from '../../../core/dato/sdk'
@@ -68,7 +69,7 @@ export const generateMetadata = async ({
   }
 }
 
-export default async function CatchAllPage({ params }: Props) {
+const CatchAllPage = async ({ params }: Props) => {
   const awaitedParams = await params
   try {
     const response = await getPageData(awaitedParams)
@@ -83,3 +84,5 @@ export default async function CatchAllPage({ params }: Props) {
     rethrowPageError(error, 'Page request failed', { params: awaitedParams })
   }
 }
+
+export default withDatoDebugPanel(CatchAllPage)

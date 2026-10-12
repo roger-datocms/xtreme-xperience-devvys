@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import { cache } from 'react'
+import { withDatoDebugPanel } from '../../../../../components/datocms-debug-panel'
 import { TemplateBlogListingPage } from '../../../../../components/template-blog-listing-page'
 import { initDatoSdk } from '../../../../../core/dato/sdk'
 import { rethrowPageError } from '../../../../../core/errors/rethrow-page-error'
@@ -28,7 +29,7 @@ const getPostsByCategoryData = cache(async (categoryId: string) => {
   return await sdk.getPostsByCategory({ categoryId })
 })
 
-export default async function BlogCategoryPage({ params }: Props) {
+const BlogCategoryPage = async ({ params }: Props) => {
   try {
     const { handle } = await params
 
@@ -65,3 +66,5 @@ export default async function BlogCategoryPage({ params }: Props) {
     rethrowPageError(err, 'Blog category request failed')
   }
 }
+
+export default withDatoDebugPanel(BlogCategoryPage)

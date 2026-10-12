@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { cache } from 'react'
+import { withDatoDebugPanel } from '../../../components/datocms-debug-panel'
 import { generateSeoMetadata } from '../../../components/global-seo'
 import { TemplateSupercarListingPage } from '../../../components/template-supercar-listing-page'
 import { initDatoSdk } from '../../../core/dato/sdk'
@@ -34,7 +35,7 @@ export const generateMetadata = async (): Promise<Metadata> => {
   }
 }
 
-export default async function SupercarsListingPage() {
+const SupercarsListingPage = async () => {
   try {
     const response = await getPageData()
 
@@ -55,3 +56,5 @@ export default async function SupercarsListingPage() {
     rethrowPageError(err, 'Supercars listing request failed')
   }
 }
+
+export default withDatoDebugPanel(SupercarsListingPage)

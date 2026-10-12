@@ -1,4 +1,5 @@
 import { cache } from 'react'
+import { withDatoDebugPanel } from '../../../components/datocms-debug-panel'
 import { TemplateBlogListingPage } from '../../../components/template-blog-listing-page'
 import { initDatoSdk } from '../../../core/dato/sdk'
 import { rethrowPageError } from '../../../core/errors/rethrow-page-error'
@@ -20,7 +21,7 @@ const getCategoriesData = cache(async () => {
   return await sdk.getAllCategories()
 })
 
-export default async function BlogListingPage() {
+const BlogListingPage = async () => {
   try {
     const response = await getBlogPostsData()
     const categories = await getCategoriesData()
@@ -44,3 +45,5 @@ export default async function BlogListingPage() {
     rethrowPageError(err, 'Blog listing request failed')
   }
 }
+
+export default withDatoDebugPanel(BlogListingPage)

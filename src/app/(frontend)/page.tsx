@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { cache } from 'react'
+import { withDatoDebugPanel } from '../../components/datocms-debug-panel'
 import { generateSeoMetadata } from '../../components/global-seo'
 import { TemplateHomepage } from '../../components/template-homepage'
 import { initDatoSdk } from '../../core/dato/sdk'
@@ -26,7 +27,7 @@ export const generateMetadata = async (): Promise<Metadata> => {
   }
 }
 
-export default async function FrontendHomePage() {
+const FrontendHomePage = async () => {
   try {
     const response = await getHomepageData()
 
@@ -42,3 +43,5 @@ export default async function FrontendHomePage() {
     rethrowPageError(err, 'Homepage request failed')
   }
 }
+
+export default withDatoDebugPanel(FrontendHomePage)

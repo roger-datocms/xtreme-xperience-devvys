@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { cache } from 'react'
+import { withDatoDebugPanel } from '../../../../components/datocms-debug-panel'
 import { generateSeoMetadata } from '../../../../components/global-seo'
 import { TemplateLandingPage } from '../../../../components/template-landing-page'
 import { initDatoSdk } from '../../../../core/dato/sdk'
@@ -68,7 +69,7 @@ export const generateMetadata = async ({
   }
 }
 
-export default async function LandingPage({ params }: Props) {
+const LandingPage = async ({ params }: Props) => {
   const awaitedParams = await params
   try {
     const response = await getLandingPageData(awaitedParams)
@@ -85,3 +86,5 @@ export default async function LandingPage({ params }: Props) {
     })
   }
 }
+
+export default withDatoDebugPanel(LandingPage)

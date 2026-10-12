@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { cache } from 'react'
+import { withDatoDebugPanel } from '../../../../components/datocms-debug-panel'
 import { generateSeoMetadata } from '../../../../components/global-seo'
 import { TemplateBlogDetailPage } from '../../../../components/template-blog-detail-page'
 import { initDatoSdk } from '../../../../core/dato/sdk'
@@ -47,7 +48,7 @@ export const generateMetadata = async ({
   }
 }
 
-export default async function BlogDetailPage({ params }: Props) {
+const BlogDetailPage = async ({ params }: Props) => {
   try {
     const { handle } = await params
     const response = await getBlogPostData(handle)
@@ -68,3 +69,5 @@ export default async function BlogDetailPage({ params }: Props) {
     rethrowPageError(err, 'Blog detail request failed')
   }
 }
+
+export default withDatoDebugPanel(BlogDetailPage)
